@@ -9,6 +9,7 @@ define( 'INGOT_VER', '1.0.0' );
 define( 'INGOT_URL', plugin_dir_url( __FILE__ ) );
 define( 'INGOT_DIR', dirname( __FILE__ ) );
 define( 'INGOT_UI_PARTIALS_DIR', dirname( __FILE__ ) . '/classes/ui/admin/partials/' );
+define( 'INGOT_ROOT', basename( dirname( __FILE__ ) ) );
 
 
 add_action( 'init', function(){

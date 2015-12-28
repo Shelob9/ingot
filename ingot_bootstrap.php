@@ -45,7 +45,7 @@ class ingot_bootstrap {
 			add_filter( 'ingot_force_update_table', '__return_true' );
 			if (  ! did_action( 'ingot_loaded') ) {
 				include_once( $autoloader );
-
+				self::maybe_upgrade();
 				self::add_tables();
 
 				if( self::check_if_tables_exist() ) {
@@ -57,6 +57,7 @@ class ingot_bootstrap {
 					}
 
 					self::maybe_load_api();
+
 
 
 					add_action( 'init', array( __CLASS__, 'init_cookies' ), 25 );
@@ -421,6 +422,38 @@ class ingot_bootstrap {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Maybe run DB updater
+	 *
+	 * @access protected
+	 *
+	 * @since 1.0.1
+	 */
+	protected static function maybe_upgrade(){
+		if( INGOT_VER != get_option( 'ingot_version', 0 ) ) {
+			self::dump_prebeta();
+			update_option( 'ingot_version', INGOT_VER, false );
+		}
+
+
+	}
+
+	/**
+	 * Dump pre-beta tables
+	 *
+	 * @access protected
+	 *
+	 * @since 1.0.1
+	 */
+	protected static function dump_prebeta(){
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'ingot_sequence';
+		if( self::table_exists( $table_name ) ) {
+			ingot_destroy();
+		}
+
 	}
 
 

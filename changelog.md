@@ -1,3 +1,19 @@
+# 1.0.1
+* Dump old tables if upgrading from beta
+* Don't assume path for dependencies
+
+# 1.0.0
+* Bower for dependencies instead of using CDNs
+* UI Improvements
+* Bug fixes
+
+# 0.4.0
+* Improve UI
+* Refactor testing algorithm/crud/API
+
+# 0.3.0
+* Improve UI
+
 # 0.2.2
 * Improved compatibility with WordPress 4.4
 * Plugin header meta data

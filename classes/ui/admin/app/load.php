@@ -84,9 +84,10 @@ class load {
 
 		//dependencies
 		$files = glob( INGOT_DIR . '/assets/vendor/js/**/*.js' );
+		$root = '/' . INGOT_ROOT . '/';
 		foreach( $files as $i => $path ){
 			$handle = sanitize_key( basename( $path ) );
-			$pos = strpos( $path, '/ingot/' ) + strlen( '/ingot/' );
+			$pos = strpos( $path, $root ) + strlen( $root );
 			$path = INGOT_URL . substr( $path, $pos );
 			if( 'angular-translatejs' == $handle ) {
 				continue;

@@ -12,7 +12,7 @@ module.exports = function (grunt) {
                 command: 'bower update'
             },
             activate : {
-                command: 'composer update --no-dev; bower update'
+                command: 'composer update --no-dev; bower update; bower-installer'
             }
         },
         clean: {
@@ -51,7 +51,8 @@ module.exports = function (grunt) {
                     '!.scrutinizer.yml',
                     '!phpunit.xml',
                     '!tests/**',
-                    '!bower_components'
+                    '!bower_components/**',
+                    '!bin/**'
                 ],
                 dest: 'build/<%= pkg.name %>/'
             }
@@ -166,8 +167,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks( 'grunt-git' );
     grunt.loadNpmTasks( 'grunt-text-replace' );
     grunt.loadNpmTasks( 'grunt-shell');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks( 'grunt-contrib-uglify');
+    grunt.loadNpmTasks( 'grunt-contrib-watch');
     grunt.loadNpmTasks( 'grunt-contrib-concat' );
 
 
