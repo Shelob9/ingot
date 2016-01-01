@@ -32,9 +32,9 @@ before_script:
 script:
 - if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
   ]]; then phpunit --coverage-clover=coverage.clover; else phpunit; fi
-- sudo composer update
-- sudo npm install
-- sudo npm install
+- composer update
+- npm install
+- npm install
 - bower update;
 - bower-installer
 
