@@ -1,3 +1,4 @@
+<?php
 /**
 Plugin Name: Ingot
 Version: 1.0.2
