@@ -28,15 +28,16 @@ matrix:
 
 before_script:
 - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+- sudo composer update
+- sudo npm install
+- sudo npm install
+- bower update;
+- bower-installer
 
 script:
 - if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
   ]]; then phpunit --coverage-clover=coverage.clover; else phpunit; fi
-- composer update
-- npm install
-- npm install
-- bower update;
-- bower-installer
+
 
 after_script:
 - if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
