@@ -14,23 +14,39 @@ namespace ingot\testing\tests\price\plugins;
 
 use ingot\testing\tests\price\price;
 
-class edd  extends price{
+class edd extends price {
+
 
 	/**
-	 * Setup the variable and prices properties
+	 * Slug for plugin
 	 *
-	 * @since 0.0.9
+	 * @since 1.1.0
 	 *
 	 * @access protected
+	 *
+	 * @var string
 	 */
-	protected function set_price() {
-		if( edd_has_variable_prices( $this->product->ID ) ) {
-			$this->variable = true;
-			$this->prices = edd_get_variable_prices( $this->product->ID );
-		}else{
-			$this->variable = false;
-			$this->prices = edd_get_download_price( $this->product->ID );
+	protected $plugin_slug = 'edd';
+
+	/**
+	 * Filter variable prices
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $prices Variable prices
+	 * @param \ingot\testing\object\price\test| $test Test object
+	 * @param int $id Product ID
+	 * @return array
+	 */
+	protected function handle_variable_prices( $prices, $test, $id ){
+
+		if ( is_array( $prices ) && ! empty( $prices ) ) {
+			foreach ( $prices as $i => $price ) {
+				$prices[ $i ][ 'amount' ] = $this->filter_price( $prices[ $i ][ 'amount' ], $id );
+			}
 		}
+
+		return $prices;
 	}
 
 	/**
@@ -56,7 +72,71 @@ class edd  extends price{
 	}
 
 	/**
-	 * Sanatize prics display
+	 * Hook for tracking purchases
+	 *
+	 * @since 1.1.0
+	 *
+	 * @access protected
+	 */
+	protected function purchase_hook(){
+		add_action( 'edd_complete_purchase', array( $this, 'track_edd_sale' ) );
+	}
+
+	/**
+	 * Track an EDD sale
+	 *
+	 * @since 0.0.0
+	 *
+	 * @uses "edd_complete_purchase"
+	 *
+	 * @param $payment_id
+	 */
+	public function track_edd_sale( $payment_id ) {
+		$payment_meta = edd_get_payment_meta( $payment_id );
+		$products = self::get_edd_downloads( $payment_meta );
+		$this->check_for_winners( $products );
+	}
+
+	/**
+	 * Check products in a sale for any we are testing and if so registers conversion
+	 *
+	 * @since 0.0.9
+	 *
+	 * @access protected
+	 *
+	 * @param array $products
+	 */
+	protected function check_for_winners( $products ) {
+			foreach( $products as $product ){
+				if( ! is_null( $test = $this->get_test( $product ) ) ){
+					ingot_register_conversion( $test->ID );
+
+				}
+			}
+	}
+
+	/**
+	 * Get products IDs from EDD payment meta
+	 *
+	 * @since 0.0.9
+	 *
+	 * @access protected
+	 *
+	 * @param array $payment_meta
+	 *
+	 * @return array
+	 */
+	protected  function get_edd_downloads( $payment_meta ) {
+		$downloads = array();
+		if( is_array( $payment_meta ) && isset( $payment_meta[ 'downloads' ] ) && ! empty( $payment_meta[ 'downloads' ] ) ) {
+			$downloads = wp_list_pluck( $payment_meta[ 'downloads' ], 'id' );
+		}
+
+		return $downloads;
+	}
+
+	/**
+	 * Sanatize price display
 	 *
 	 * @since 0.0.9
 	 *
@@ -67,7 +147,12 @@ class edd  extends price{
 	 * @return string
 	 */
 	protected function sanatize_price( $price ) {
-		return edd_sanitize_amount( $price );
+		if ( function_exists( 'edd_sanitize_amount' ) ) {
+			return edd_sanitize_amount( $price );
+		}else{
+			return parent::sanatize_price( $price );
+		}
+
 	}
 
 }

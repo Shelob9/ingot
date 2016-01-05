@@ -16,6 +16,7 @@ class variant extends crud {
 
 	public static $what = 'variant';
 
+
 	/**
 	 * Validate item config
 	 *
@@ -33,8 +34,8 @@ class variant extends crud {
 			return new \WP_Error( 'ingot-invalid-config', __(  'Variant\'s group_ID type field numeric', 'ingot'  ), $data );
 		}
 
-		if( 'price' == $data[ 'type' ] && ! is_numeric( $data[ 'type' ] ) ){
-			return new \WP_Error( 'ingot-invalid-config', __(  'Variants type field for price tests must be ID of a product', 'ingot'  ), $data );
+		if( 'price' == $data[ 'type' ] && ! is_numeric( $data[ 'content' ] ) ){
+			return new \WP_Error( 'ingot-invalid-config', __(  'Variant\'s content field for price tests must be ID of a product', 'ingot'  ), $data );
 		}
 
 		if ( false == self::validate_type( $data ) ) {

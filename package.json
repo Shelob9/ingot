@@ -1,6 +1,6 @@
 {
   "name": "ingot",
-  "version": "1.0.2-b-1",
+  "version": "1.1.0-b-1",
   "description": "Ingot",
   "repository": {
     "type": "git",
@@ -23,6 +23,8 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-git": "^0.3.3",
     "grunt-shell": "^1.1.1",
-    "grunt-text-replace": "^0.4.0"
+    "grunt-text-replace": "^0.4.0",
+    "grunt-wp-i18n": "^0.5.3",
+    "i18n": "^0.5.0"
   }
 }

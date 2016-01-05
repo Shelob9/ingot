@@ -33,6 +33,39 @@ class group extends crud {
 	}
 
 	/**
+	 * Ensure an array has all the needed fields for a specific type
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $data
+	 *
+	 * @return bool
+	 */
+	public static function valid( $data ){
+		if( parent::valid( $data ) && 'price' == $data[ 'type' ] ){
+			return isset( $data[ 'meta' ][ 'product_ID' ] ) && is_numeric( $data[ 'meta' ][ 'product_ID' ] );
+		}
+
+	}
+
+	/**
+	 * Get a collection of items
+	 *
+	 * @since 0.4.0
+	 *
+	 * @param array $params {
+	 *  $group_id int ID of group to get all
+	 *  $ids array Optional. Array of ids to get.
+	 *  $limit int Optional. Limit results, default is -1 which gets all.
+	 *  $page int Optional. Page of results, used with $limit. Default is 1
+	 *  $return string Optional. What to return all|IDs Return all fields or just IDs
+	 *  $type string|bool Optional  If false, the default, both price and click groups are returned if is price or click, those types are returned
+	 * }
+	 *
+	 * @return array
+	 */
+
+	/**
 	 * Save levers for a group
 	 *
 	 * @since 0.4.0
@@ -199,6 +232,21 @@ class group extends crud {
 				}
 
 			}
+		}
+
+		if( 'price' == $data[ 'type' ] ) {
+
+			if( ! isset($data[ 'meta' ][ 'product_ID' ]  ) ){
+				return new \WP_Error( 'ingot-invalid-config-no-product-id', __( 'Ingot price tests must set product ID in meta.product_ID', 'ingot' ) );
+			}
+
+			if( isset( $data[ 'meta' ][ 'variable_prices' ] ) && is_array(  $data[ 'meta' ][ 'variable_prices' ] ) ){
+				$data[ 'meta' ][ 'variable_prices' ] = helpers::make_array_values_numeric( $data[ 'meta' ][ 'variable_prices' ] );
+			}else{
+				$data[ 'meta' ][ 'variable_prices' ] = [];
+			}
+
+
 		}
 
 		return $data;

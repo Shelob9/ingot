@@ -29,6 +29,16 @@ install_wp() {
 	tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
 
 	wget -nv -O $WP_CORE_DIR/wp-content/db.php https://raw.github.com/markoheijnen/wp-mysqli/master/db.php
+
+    if [ ! -d "$WP_CORE_DIR/wp-content/easy-digital-downloads" ]; then
+      git clone https://github.com/easydigitaldownloads/Easy-Digital-Downloads $WP_CORE_DIR/wp-content/easy-digital-downloads
+    fi
+
+    if [ -d "$WP_CORE_DIR/wp-content/easy-digital-downloads" ]; then
+          cd $WP_CORE_DIR/wp-content/easy-digital-downloads
+          git pull origin master
+    fi
+
 }
 
 install_test_suite() {
@@ -75,4 +85,6 @@ install_db() {
 
 install_wp
 install_test_suite
-install_db
+if [ -d /var/lib/mysql/databasename ] ; then
+    install_db
+fi

@@ -4,7 +4,9 @@
     <div class="row">
         <div class="sm-col-12" id="notices">
             <div ng-show="0 == welcome.settings.license_valid" class="alert alert-danger">
-                    <a ui-sref="settings" class="alert-link">License not active or not valid</a>
+                    <a ui-sref="settings" class="alert-link">
+                        {{translate.settings.license_notice}}
+                    </a>
             </div>
         </div>
     </div>
@@ -17,27 +19,27 @@
             <ul class="list-inline">
                 <li>
                     <a href="http://ingothq.com">
-                        {{ 'welcome.learn_more' | translate }}
+                        {{translate.welcome.learn_more}}
                     </a>
                 </li>
                 <li>
                     <a ui-sref="clickTests">
-                        {{ 'welcome.click_tests' | translate }}
+                        {{translate.welcome.click_tests}}
                     </a>
                 </li>
                 <li>
                     <a ui-sref="priceTests">
-                        {{ 'welcome.price_tests' | translate }}
+                        {{translate.welcome.price_tests}}
                     </a>
                 </li>
                 <li>
                     <a href="http://ingothq.com/docs/" target="_blank">
-                        {{ 'welcome.docs' | translate }}
+                        {{translate.welcome.docs}}
                     </a>
                 </li>
                 <li>
                     <a href="http://ingothq.com/customersupport/" target="_blank">
-                        {{ 'welcome.support' | translate }}
+                        {{translate.welcome.support}}
                 </li>
             </ul>
         </div>

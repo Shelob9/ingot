@@ -178,6 +178,23 @@ class group {
 		return $this->levers;
 	}
 
+	/**
+	 * Get a lever by variant ID
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param int $variant_id ID of variant
+	 *
+	 * @return \MaBandit\Lever|null
+	 */
+	public function get_lever( $variant_id ){
+		$levers = $this->get_levers();
+		if( is_array( $levers ) && isset( $levers[ $this->ID ], $levers[ $this->ID ][ $variant_id ] ) ){
+			return $levers[ $this->ID ][ $variant_id ];
+
+		}
+	}
+
 	protected function get_lever_ids(){
 		$levers = $this->levers;
 	}

@@ -1,0 +1,516 @@
+# Copyright (C) 2015 
+# This file is distributed under the same license as the Ingot package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Ingot 1.1.0-b-1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ingot\n"
+"POT-Creation-Date: 2015-12-29 03:03:20+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.5.3\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+
+#: classes/testing/api/rest/groups.php:173
+#: classes/testing/api/rest/groups.php:203
+#: classes/testing/api/rest/groups.php:236
+#: classes/testing/api/rest/groups.php:268
+#: classes/testing/api/rest/groups.php:513
+#: classes/testing/api/rest/groups.php:535
+msgid "No group found"
+msgstr ""
+
+#: classes/testing/api/rest/groups.php:243
+msgid "Group Deleted"
+msgstr ""
+
+#: classes/testing/api/rest/groups.php:300
+msgid "ID of group"
+msgstr ""
+
+#: classes/testing/api/rest/groups.php:306
+msgid "Name of Test Group"
+msgstr ""
+
+#: classes/testing/api/rest/groups.php:313
+msgid "Type of Test Group"
+msgstr ""
+
+#: classes/testing/api/rest/groups.php:321
+msgid "Link for content tests"
+msgstr ""
+
+#: classes/testing/api/rest/groups.php:328
+msgid "Page of results."
+msgstr ""
+
+#: classes/testing/api/rest/groups.php:334
+msgid "Tests to add to group"
+msgstr ""
+
+#: classes/testing/api/rest/groups.php:339
+msgid "Meta data for group"
+msgstr ""
+
+#: classes/testing/api/rest/route.php:239
+msgid "Route Not Yet Implemented :("
+msgstr ""
+
+#: classes/testing/api/rest/variant.php:58
+msgid "ID of variant"
+msgstr ""
+
+#: classes/testing/api/rest/variant.php:140
+msgid "ID of Test"
+msgstr ""
+
+#: classes/testing/crud/group.php:148 classes/testing/crud/variant.php:41
+msgid "Invalid group type"
+msgstr ""
+
+#: classes/testing/crud/group.php:152
+msgid "Invalid click group type"
+msgstr ""
+
+#: classes/testing/crud/group.php:158
+msgid "Invalid price group type"
+msgstr ""
+
+#: classes/testing/crud/group.php:208
+msgid "Click groups must have a valid link."
+msgstr ""
+
+#: classes/testing/crud/variant.php:33
+msgid "Variant's group_ID type field numeric"
+msgstr ""
+
+#: classes/testing/crud/variant.php:37
+msgid "Variant's content field for price tests must be ID of a product"
+msgstr ""
+
+#: classes/testing/object/group.php:213
+msgid "Invalid group passed to Ingot group object."
+msgstr ""
+
+#: classes/testing/object/group.php:218
+msgid "Invalid group config passed to Ingot group object."
+msgstr ""
+
+#: classes/testing/tests/price/price.php:231
+#: classes/testing/tests/price/price.php:242
+#: classes/testing/tests/price/price.php:253
+msgid "Must override in subclass"
+msgstr ""
+
+#: classes/testing/types.php:52 classes/ui/admin/app/translations.php:66
+msgid "Link"
+msgstr ""
+
+#: classes/testing/types.php:53 classes/ui/admin/app/translations.php:71
+msgid "Text"
+msgstr ""
+
+#: classes/testing/types.php:54
+msgid "Button"
+msgstr ""
+
+#: classes/testing/types.php:55
+msgid "Button Color"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Ingot"
+msgstr ""
+
+#: classes/ui/admin/app/load.php:134
+msgid "Toogle Navigation"
+msgstr ""
+
+#: classes/ui/admin/app/load.php:151
+msgid "Content Tests"
+msgstr ""
+
+#: classes/ui/admin/app/load.php:156 classes/ui/admin/app/translations.php:115
+msgid "Price Tests"
+msgstr ""
+
+#: classes/ui/admin/app/load.php:163 classes/ui/admin/app/translations.php:93
+msgid "Settings"
+msgstr ""
+
+#: classes/ui/admin/app/load.php:168 classes/ui/admin/app/translations.php:119
+msgid "Support"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:26
+msgid "Group Saved"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:27
+msgid "Could Not Save"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:28
+msgid "Please try again and/or contact support"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:29
+msgid "Close"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:30
+msgid "Saved Group: "
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:31
+msgid "At this time, you can not remove a test from a group."
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:32
+msgid "Beta Limitation Encountered"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:33
+msgid ""
+"Sorry about that but Ingot is still in beta. We will be adding this feature "
+"soon."
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:34
+msgid "We do not have a functional stats viewer yet."
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:35
+msgid "Test Group Deleted"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:36
+msgid "Are You Sure About That?"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:37
+msgid "Deleting all groups is not reversible or undoable."
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:38
+#: classes/ui/admin/app/translations.php:78
+msgid "Delete"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:39
+msgid "Cancel"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:40
+msgid "Canceled"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:41
+msgid "Loading Spinner"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:42
+msgid "This group has no tests"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:43
+msgid "Please enter a number between -.99 and .99"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:44
+msgid "Settings Saved"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:46
+msgid "Stats For Group"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:47
+msgid "No Stats for this group yet"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:48
+msgid "Conversion Rate"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:49
+msgid "Varaint"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:52
+msgid "Content Test Groups"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:53
+msgid "Price Test Groups"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:54
+msgid "Show All"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:55
+msgid "Create New"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:56
+msgid "Edit Group"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:57
+msgid "Group Stats"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:58
+msgid "Delete Group"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:59
+msgid "There are no groups, create one."
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:62
+msgid "Save Group"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:63
+msgid "Type"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:64
+msgid "Name"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:65
+msgid "Group Settings"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:67
+msgid "Text (Used For All Buttons)"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:68
+msgid "Color (Used For All Buttons)"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:69
+msgid "Background (Used For All Buttons)"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:70
+msgid "Tests"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:72
+msgid "Button Text Color"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:73
+msgid "Button Background Color"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:74
+msgid "Add Test"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:75
+msgid "eCommerce Plugin"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:76
+msgid "Product"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:77
+msgid "Price Variation (percentage)"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:79
+msgid "Content Test"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:80
+msgid "Data and Tests"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:81
+msgid "Group Name"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:82
+msgid "Group Type"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:83
+msgid "Group Data and Tests"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:84
+msgid "Name of your new test, be specific for easy reference later."
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:85
+msgid "Test Name"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:86
+msgid "Edit Group Type"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:87
+msgid "Type of test you want to perform"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:88
+msgid "Sample Button"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:89
+msgid "New Content Test"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:94
+msgid "Work around caching"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:95
+msgid ""
+"If you are using a static HTML cache testing will not work properly, since "
+"the same version of your site is shown to all visitors. Use this mode to "
+"work around this issue."
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:96
+msgid "Advanced Click Tracking"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:97
+msgid ""
+"Ingot always tracks clicks, in advanced mode, more details are tracked. "
+"This takes up more space in the database, but enables Ingot to be more "
+"powerful."
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:98
+msgid "Share Your Data Anonymously"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:99
+msgid ""
+"When enabled, your test data is shared with Ingot to help us improve the "
+"service."
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:100
+msgid "License Code"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:101
+msgid "Enter your license code to enable support and updates."
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:102
+msgid "Save Settings"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:103
+msgid "Edit Group Name"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:104
+msgid "Edit Group Tests"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:105
+msgid "License not active or not valid"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:111
+msgid "Ingot Banner Logo"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:112
+msgid "Ingot: Do Less, Convert More"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:113
+msgid "Helpful Links"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:114
+msgid "Watch This Short Video To Learn How To Use Ingot"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:116
+msgid "Click Tests"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:117
+msgid "Learn more about Ingot"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:118
+msgid "Documentation"
+msgstr ""
+
+#: classes/ui/admin/app/translations.php:122
+msgid "For support please use:"
+msgstr ""
+
+#: classes/ui/render/click_tests/text.php:50
+msgid "Extra data for tracking Ingot click tests "
+msgstr ""
+
+#: classes/ui/util.php:67
+msgid "Choose"
+msgstr ""
+
+#: classes/ui/util.php:68 includes/functions.php:420
+msgid "Easy Digital Downloads"
+msgstr ""
+
+#: classes/ui/util.php:69 includes/functions.php:421
+msgid "WooCommerce"
+msgstr ""
+
+#: includes/EDD_SL_Plugin_Updater.php:181
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" "
+"class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+msgstr ""
+
+#: includes/EDD_SL_Plugin_Updater.php:188
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" "
+"class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a "
+"href=\"%4$s\">update now</a>."
+msgstr ""
+
+#: includes/EDD_SL_Plugin_Updater.php:326
+msgid "You do not have permission to install plugin updates"
+msgstr ""
+
+#: includes/EDD_SL_Plugin_Updater.php:326
+msgid "Error"
+msgstr ""
+
+#: ingot_bootstrap.php:75
+msgid "Ingot Not Loaded"
+msgstr ""
+
+#: vendor/calderawp/dismissible-notice/src/Caldera_Warnings_Dismissible_Notice.php:129
+msgid "Dismiss this notice."
+msgstr ""

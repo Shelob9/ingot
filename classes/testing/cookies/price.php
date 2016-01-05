@@ -1,6 +1,6 @@
 <?php
 /**
- * Setsups price cookies
+ * Sets up price cookies
  *
  * @package   ingot
  * @author    Josh Pollock <Josh@JoshPress.net>
@@ -11,209 +11,211 @@
 
 namespace ingot\testing\cookies;
 
-
-use ingot\testing\crud\price_group;
-use ingot\testing\crud\price_test;
-use ingot\testing\crud\sequence;
-use ingot\testing\crud\test;
-use ingot\testing\tests\chance;
-use ingot\testing\tests\flow;
+use ingot\testing\crud\crud;
+use ingot\testing\crud\group;
+use ingot\testing\crud\price_query;
+use ingot\testing\object\price\test;
+use ingot\testing\types;
 use ingot\testing\utility\helpers;
 
-class price {
+
+class price extends cookie {
 
 	/**
-	 * The price cookie
+	 * Hold all groups we need to track
 	 *
-	 * @since 0.2.0
-	 *
-	 * @access protected
+	 * @since 1.1.0
 	 *
 	 * @var array
 	 */
-	private $price_cookie;
-
-	/**
-	 * Current price sequences
-	 *
-	 * @since 0.2.0
-	 *
-	 * @access private
-	 *
-	 * @var array
-	 */
-	private $current_sequences = array();
+	private $groups = [];
 
 	/**
 	 * Construct object
 	 *
-	 * @since 0.0.9
+	 * @since 1.1.0
 	 *
-	 * @param array $current_sequences Current sequences
-	 * @param array $price_cookie Price cookie portion of our cookie
+	 * @param array $cookie Current contents of this part of cookie
 	 * @param bool $reset Optional. Whether to rest or not, default is false
 	 */
-	public function __construct( $current_sequences, $price_cookie, $reset = true ){
-		if ( false == $reset  ) {
-			$this->price_cookie = $price_cookie;
-		}else{
-			$this->price_cookie = array();
+	public function __construct(  $cookie, $reset = true ){
+		parent::__construct( $cookie, $reset );
+		$this->set_groups();
+		if( ! empty( $this->groups ) ){
+			$this->setup_cookie();
 		}
 
-		$this->current_sequences = $current_sequences;
-
-		if( ! empty( $this->current_sequences )) {
-			$this->check_sequences();
-			$this->check_sequence_lives();
-		}
 	}
 
 	/**
-	 * Get price cookie
+	 * Set tests property with all test we need to track
 	 *
-	 * @since 0.0.9
+	 * @since 1.1.0
 	 *
-	 * @return array Price cookie portion of our cookie
+	 * @access private
+	 *
+	 * @return array|mixed
 	 */
-	public function get_price_cookie() {
-		return $this->price_cookie;
-	}
-
-
-
-	/**
-	 * Make sure all current sequences are set
-	 *
-	 * @since 0.0.9
-	 *
-	 * @access protected
-	 *
-	 */
-	protected function check_sequences(){
-		$current_ids_in_cookie = array_keys( $this->price_cookie );
-		foreach( $this->current_sequences as $sequence_id => $sequence ){
-			if( ! in_array( $sequence_id, $current_ids_in_cookie ) ){
-				$this->add_test( $sequence );
+	private function set_groups(){
+		$key = md5( __FUNCTION__ );
+		if( WP_DEBUG || ! is_array( $groups = get_transient( $key ) ) && ! empty( $groups ) ){
+			foreach( types::allowed_price_types() as $plugin ){
+				$this->groups[ $plugin ] = price_query::find_by_plugin( $plugin );
 			}
+
+			set_transient( $key, $this->groups, HOUR_IN_SECONDS );
+
 		}
+
 	}
 
 	/**
-	 * Ensure all tests are not expired and refresh if needed
+	 * Setup the cookie contents
 	 *
-	 * @since 0.0.9
+	 * @since 1.1.0
 	 *
 	 * @access protected
 	 */
-	protected function check_sequence_lives() {
-		$now = time();
-		foreach( $this->price_cookie as $sequence_id => $test ){
-			$expires = helpers::v( 'expires', $test, 0 );
-			if( $now < $expires ) {
-				$this->refresh_test( $sequence_id );
+	protected function setup_cookie(){
+		foreach( $this->groups as $groups_by_type ) {
+			foreach( $groups_by_type as $type => $group ){
+				if ( $this->needed_to_add( $group ) ) {
+					$this->add_test( $group );
+				}
+
 			}
 
 		}
 
+		//remove uneeded?
 	}
 
 	/**
-	 * Refresh an expired test
+	 * @param $group
 	 *
-	 * @since 0.0.9
-	 *
-	 * @access protected
-	 *
-	 * @param int $sequence_id
+	 * @return \ingot\testing\object\price\test
 	 */
-	protected function refresh_test( $sequence_id ){
-		if( array_key_exists( $sequence_id, $this->current_sequences ) ){
-			$sequence = $this->current_sequences[ $sequence_id ];
-		}else{
-			$sequence = sequence::read( $sequence_id );
+	protected function setup_test_object( $group ) {
+		if( is_numeric( $group ) ) {
+			$group = group::read( $group );
 		}
 
-		if( is_array( $sequence ) ){
-			$this->add_test( $sequence );
-		}
-	}
-
-
-	/**
-	 * Add a test
-	 *
-	 * @since 0.0.9
-	 *
-	 * @access protected
-	 *
-	 * @param array $sequence
-	 */
-	protected function add_test( $sequence ){
-		$a_or_b = $this->a_or_b( $sequence, false );
-		$group = price_group::read( $sequence[ 'group_ID' ] );
-		if ( is_array( $group ) ) {
-			$test_id = $this->get_test_id( $sequence, $a_or_b );
-			$test = test::read( $test_id );
-			$test_details = \ingot\testing\utility\price::price_detail( $test_id, $a_or_b, $sequence[ 'ID' ], $group );
-
-			$this->price_cookie[ $sequence[ 'ID' ] ] = $test_details;
+		if( ! group::valid($group ) ){
+			return false;
 		}
 
+		$bandit  = new \ingot\testing\bandit\price( $group[ 'ID' ] );
+		$variant = $bandit->choose();
+
+		$test = new test( [
+			'plugin'  => $group[ 'sub_type' ],
+			'ID'      => $group[ 'ID' ],
+			'expires' => $this->expires(),
+			'variant' => $variant,
+			'product' => get_post( $group[ 'meta' ][ 'product_ID' ] ),
+			'price_callback' => \ingot\testing\utility\price::get_price_callback( $group[ 'sub_type' ] )
+		] );
+
+		return $test;
+
 	}
 
 	/**
-	 * Determine a or b
+	 * Test if we need to add test to cookie
+	 *
+	 * @since 1.1.0
+	 *
+	 * @access protected
+	 *
+	 * @param array $group
+	 *
+	 * @return bool
+	 */
+	protected function needed_to_add( $group ){
+		if( ! group::valid( $group ) ) {
+			return true;
+		}else {
+			//not in cookie true
+			if( ! isset( $this->cookie[ $group[ 'sub_type' ] ][ $group[ 'ID' ] ] ) ) {
+				return true;
+			}
+
+			//in cookie and expired true
+			$obj = $this->get_test_from_cookie( $group );
+			if( is_object( $obj ) && $this->expired( $obj->expires ) ) {
+				return true;
+			}
+
+		}
+
+		//in cookie and not expired false
+		return false;
+
+	}
+
+	/**
+	 * Get test out of cookie
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array  $group
+	 *
+	 * @return bool|\ingot\testing\object\price\test
+	 */
+	protected function get_test_from_cookie( $group ){
+
+		$test = \ingot\testing\utility\price::get_price_test_from_cookie( $group[ 'sub_type' ], \ingot\testing\utility\price::get_product_ID( $group ), $this->cookie );
+
+		return $test;
+
+	}
+
+	/**
+	 * Add test to cookie
+	 *
+	 * @since 1.1.0
+	 *
+	 * @access protected
+	 *
+	 * @param array $group Group config
+	 */
+	protected function add_test( $group ) {
+		if( group::valid( $group ) ){
+			$test = $this->setup_test_object( $group );
+			if ( is_object( $test ) ) {
+				$product_ID = \ingot\testing\utility\price::get_product_ID( $group );
+				if ( is_object( $test ) && is_numeric( $product_ID ) ) {
+					$this->cookie[ $group[ 'sub_type' ] ][ $product_ID ] = wp_json_encode( $test );
+				}
+			}
+
+		}
+
+	}
+
+	/**
+	 * Set cookie property for class
 	 *
 	 * @since 0.0.9
 	 *
 	 * @access protected
 	 *
-	 * @param array $sequence
-	 *
-	 * @return bool|string
+	 * @param array $cookie Current contents of this part of cookie
+	 * @param bool $reset Optional. Whether to rest or not, default is false
 	 */
-	protected function a_or_b( $sequence ) {
-		$chance = new chance( $sequence );
-		$a_or_b = flow::choose_a( $chance->get_chance(), false );
-
-		return $a_or_b;
-	}
-
-	/**
-	 * Find test ID by a or b
-	 *
-	 * @since 0.0.9
-	 *
-	 * @access protected
-	 *
-	 * @param array $sequence
-	 * @param string $a_or_b
-	 *
-	 * @return mixed
-	 */
-	protected function get_test_id( $sequence, $a_or_b ) {
-		if ( 'a' == $a_or_b ) {
-			$test_id = $sequence['a_id'];
+	protected function set_cookie( $cookie, $reset ) {
+		if ( false == $reset ) {
+			$this->cookie = $cookie;
 		} else {
-			$test_id = $sequence['b_id'];
+			$this->cookie = [ ];
 		}
 
-		return $test_id;
-	}
+		foreach ( types::allowed_price_types() as $type ) {
+			if ( ! isset( $this->cookie[ $type ] ) ) {
+				$this->cookie[ $type ] = [ ];
+			}
 
-	/**
-	 * Get expiration time for tests
-	 *
-	 * @todo filter/option/etc?
-	 *
-	 * @since 0.0.9
-	 *
-	 * @access protected
-	 *
-	 * @return int
-	 */
-	protected function expires() {
-		return time() + ( 10 * DAY_IN_SECONDS );
+		}
 
 	}
 

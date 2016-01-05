@@ -138,7 +138,7 @@ abstract class bandit {
 	 *
 	 * @return \ingot\testing\bandit\persistor
 	 */
-	 abstract protected function create_persistor();
+	abstract protected function create_persistor();
 
 	protected function create_experiment() {
 		$group = group::read( $this->ID );

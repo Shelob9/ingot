@@ -49,11 +49,10 @@ abstract class crud {
 	 * @param array $params {
 	 *  $group_id int ID of group to get all
 	 *  $ids array Optional. Array of ids to get.
-	 *  $current bool Optional. Used with $ids or $group_id, if true, will return the first non-completed sequence for that group_id or set of ids. Default is false.
 	 *  $limit int Optional. Limit results, default is -1 which gets all.
 	 *  $page int Optional. Page of results, used with $limit. Default is 1
 	 *  $return string Optional. What to return all|IDs Return all fields or just IDs
-	 *  $price_test Optional bool if true and $current current sequences for all prices tests are returned
+	 *  $type string|bool Optional  If false, the default, both price and click groups are returned if is price or click, those types are returned. Only applies to group CRUD
 	 * }
 	 *
 	 * @return array
@@ -64,11 +63,10 @@ abstract class crud {
 			array(
 				'group_ID' => null,
 				'ids' => array(),
-				'current' => false,
 				'limit' => -1,
 				'page' => 1,
 				'return' => '*',
-				'price_test' => false,
+				'type' => false,
 			)
 		);
 
@@ -76,28 +74,42 @@ abstract class crud {
 			$args[ 'limit' ] = 999999999;
 		}
 
-
-
 		if( strtolower( 'ids' ) !== $args[ 'return' ] ) {
 			$fields = '*';
 		}else{
 			$fields = '`ID`';
 		}
 
+		if( is_bool( $args[ 'type' ] ) ||  ! in_array( $args[ 'type'], types::allowed_types() ) ) {
+			$args[ 'type' ] = false;
+		}
 
 		global $wpdb;
+		$where = false;
 		$table_name = self::get_table_name();
 		if( helpers::v( 'group_ID', $args, null ) ){
+			$where = true;
 			$sql = sprintf(
 				'SELECT %s FROM `%s` WHERE `group_ID` = %d',
 				$fields,
 				$table_name, helpers::v( 'group_ID', $params )
 			);
 		}elseif( ! empty( helpers::v( 'ids', $args, array() ) ) ){
+			$where = true;
 			$in = implode( ',', helpers::v( 'ids', $params, array() ) );
 			$sql = sprintf( 'SELECT %s FROM `%s` WHERE `ID` IN( %s)', $fields,$table_name, $in );
 		}else{
 			$sql = sprintf( 'SELECT %s FROM `%s`', $fields, $table_name );
+		}
+
+		if( is_string( $args[ 'type' ] ) ){
+			if( $where ) {
+				$first_part = ' AND';
+			}else{
+				$first_part = ' WHERE';
+			}
+			$where = true;
+			$sql .= sprintf( ' %s `type` = "%s"', $first_part, $args[ 'type' ] );
 		}
 
 		if( helpers::v( 'current', $args, false ) ) {
@@ -106,15 +118,7 @@ abstract class crud {
 
 		$sql .= sprintf( ' ORDER BY `ID` ASC LIMIT %d OFFSET %d', $args[ 'limit' ], self::calculate_offset( $args[ 'limit' ], $args[ 'page' ] )  );
 
-		$results = $wpdb->get_results( $sql, ARRAY_A );
-		if( ! empty( $results ) ) {
-			foreach( $results as $i => $result ) {
-				$results[ $i ] = self::unseralize( $result );
-			}
-
-		}
-
-		return $results;
+		return self::bulk_query( $sql );
 
 	}
 
@@ -511,6 +515,27 @@ abstract class crud {
 		 return $data;
 	 }
 
+	/**
+	 * Process multiple rows from a SQL query
+	 *
+	 * Should be result of `$wpdb->get_results( $sql, ARRAY_A );`
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $results
+	 *
+	 * @return array
+	 */
+	public static function bulk_results( $results ) {
+		if ( ! empty( $results ) ) {
+			foreach ( $results as $i => $result ) {
+				$results[ $i ] = self::unseralize( $result );
+			}
+
+		}
+
+		return $results;
+	}
 
 
 	/**
@@ -776,5 +801,50 @@ abstract class crud {
 		return $results;
 
 	}
+
+	/**
+	 * Do bulk query
+	 *
+	 * @since 1.1.0
+	 *
+	 * @access protected
+	 *
+	 * @param $sql
+	 *
+	 * @return mixed
+	 */
+	protected static function bulk_query( $sql ) {
+		global $wpdb;
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		return self::bulk_results( $results);
+
+	}
+
+	/**
+	 * Ensure an array has all the needed fields for a specific type
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $data
+	 *
+	 * @return bool
+	 */
+	public static function valid( $data ){
+		if( ! is_array( $data ) ){
+			return false;
+		}
+
+		foreach( static::get_all_fields() as $field ) {
+			if( ! array_key_exists( $field, $data ) ) {
+				return false;
+
+			}
+
+		}
+
+		return true;
+	}
+
 
 }

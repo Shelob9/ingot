@@ -1,22 +1,21 @@
 <ul>
-    <li ng-repeat="group in groups track by $index" ng-if="groups !== 'No matching groups found.'">
-        <h5>{{ group.group_name }}</h5>
-
+    <li ng-repeat="group in groups track by $index">
+        <h5>{{group.group_name }}</h5>
         <div class="btn-group">
             <label class="btn btn-primary">
                 <a ui-sref="priceTests.edit({groupID:group.ID})">
-                    {{ 'groups.edit' | translate }}
+                    {{translate.groups.edit}}
                 </a>
             </label>
             <label class="btn btn-primary">
-                {{ 'groups.stats' | translate }}
+                {{translate.groups.stats}}
             </label>
             <label class="btn btn-primary">
-                {{ 'groups.delete' | translate }}
+                {{translate.groups.delete}}
             </label>
         </div>
     </li>
     <li ng-if="!groups.legnth">
-        There are no groups, create one.
+        {{translate.groups.no_groups}}
     </li>
 </ul>

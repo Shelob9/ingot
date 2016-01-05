@@ -1,7 +1,7 @@
 <div class="form-group row group-type-select">
     <div class="col-sm-6">
         <label for="link" class="col-md-4 col-sm-12">
-            {{ 'group.link_label_group_setting' | translate }}
+            {{translate.group.link_label_group_setting}}
         </label>
         <input id="link" type="url" ng-model="group.meta.link" class="col-md-8 col-sm-12" ng-required="true" />
     </div>
@@ -11,7 +11,7 @@
                 <ng-form name="innerForm">
                     <div class="form-group row">
                         <label for="text-{{variant.ID}}" class="col-sm-3">
-                            {{ 'group.text_label_test_setting' | translate }}
+                            {{translate.group.text_label_test_setting}}
                         </label>
                         <input name="text" type="text" id="text-{{variant.ID}}" ng-model="variant.content" class="col-sm-7"/>
                         <div class="col-sm-2 text-right">
@@ -24,7 +24,7 @@
             </div>
         </div>
         <a class="btn btn-default btn-block add-new-test" ng-click="addNewTest()" ng-href="">
-            {{ 'group.add_test' | translate }}
+            {{translate.group.add_test}}
         </a>
     </div>
 </div>

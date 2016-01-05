@@ -15,6 +15,7 @@ namespace ingot\testing\bandit;
 
 
 use ingot\testing\object\group;
+use MaBandit\CreateExperiment;
 
 class content extends bandit {
 
@@ -96,6 +97,10 @@ class content extends bandit {
 
 
 	/**
+	 * Get levers from group object
+	 *
+	 * @since 0.4.0
+	 *
 	 * @return array
 	 */
 	public function get_levers( $id ) {
@@ -111,7 +116,18 @@ class content extends bandit {
 	}
 
 
-
+	/**
+	 * Save levers using group object
+	 *
+	 * Note: this way is preferable as it bypasses capabilities checkes.
+	 *
+	 * @since 0.4.0
+	 *
+	 * @param int $id Group ID
+ 	 * @param array $levers The Levers
+	 *
+	 * @return bool
+	 */
 	public function save_levers( $id, $levers  ) {
 		if ( $id == $this->get_ID() ) {
 			$this->obj->update_levers( $levers );
@@ -123,15 +139,36 @@ class content extends bandit {
 
 	}
 
+	/**
+	 * Set obj property of class with group object
+	 *
+	 * @since 0.4.0
+	 *
+	 * @access private
+	 */
 	private function set_group_obj(){
 		$this->obj = new group( $this->get_ID() );
 	}
 
+	/**
+	 * Create experiment -- the collection of levers for this group
+	 *
+	 * Using parent method to do the creation then set levers for group
+	 *
+	 * @since 0.4.0
+	 *
+	 * @access protected
+	 */
 	protected function create_experiment() {
 		parent::create_experiment();
 
-		$levers[ $this->get_ID() ] = $this->experiment->getLevers();
-		$this->obj->update_levers( $levers );
+		if ( is_object( $this->experiment ) ) {
+			$levers[ $this->get_ID() ] = $this->experiment->getLevers();
+			$this->obj->update_levers( $levers );
+		}else{
+			//@todo
+		}
+
 	}
 
 }

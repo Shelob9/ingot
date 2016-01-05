@@ -1,66 +1,86 @@
 <div ng-controller="clickGroup">
     <h2>
-        <span ng-show="!new_group">{{ 'Content Test: ' + group.name | translate }}</span>
-        <span ng-show="new_group">{{ 'New Content Test' | translate }}</span>
+        <span ng-show="!new_group">
+            {{translate.group.content_test}}: {{group.name}}
+        </span>
+        <span ng-show="new_group">
+            {{translate.group.new_content_test}}
+        </span>
     </h2>
     <ul class="progress-indicator">
         <li ng-click="change_step(1)" ng-class="{'active': group_step == 1, 'completed': group_step > 1 || !new_group }">
             <span class="bubble"></span>
-            {{ 'Name' | translate }}
+            {{translate.group.name}}
         </li>
         <li ng-click="change_step(2)" ng-class="{'active': group_step == 2, 'completed': group_step > 2 || !new_group  }">
             <span class="bubble"></span>
-            {{ 'Type' | translate }}
+            {{translate.group.type}}
         </li>
         <li ng-click="change_step(3)" ng-class="{'active': group_step == 3, 'completed': group_step > 3 || !new_group }">
             <span class="bubble"></span>
-            {{ 'Data and Tests' | translate }}
+            {{translate.group.data_and_tests}}
         </li>
     </ul>
     <h3 class="text-center">
-        <span ng-show="group_step == 1">{{ 'Group Name' | translate }}</span>
-        <span ng-show="group_step == 2">{{ 'Group Type' | translate }}</span>
-        <span ng-show="group_step == 3">{{ 'Group Data and Tests' | translate }}</span>
+        <span ng-show="group_step == 1">
+             {{translate.group.group_name}}
+        </span>
+        <span ng-show="group_step == 2">
+            {{translate.group.group_type}}
+        </span>
+        <span ng-show="group_step == 3">
+            {{translate.group.group_data_and_tests}}
+        </span>
     </h3>
     <form ng-submit="submit()" class="simple-form">
         <div ng-show="group_step == 1">
             <p class="text-center">
-                {{ 'Name of your new test, be specific for easy reference later.' | translate }}
+                {{translate.group.test_name_instructions}}
             </p>
             <div class="row group-type-select">
                 <div class="col-sm-3">
                     <label for="test_name" class="control_label">
-                        {{ 'Test Name' | translate }}
+                        {{translate.group.test_name}}
                     </label>
                 </div>
                 <input id="test_name" ng-model="group.name" class="col-sm-9"/>
             </div>
-            <span class="btn btn-primary pull-right" ng-click="change_step(2)">{{ 'Edit Group Type' | translate }}</span>
+            <span class="btn btn-primary pull-right" ng-click="change_step(2)">
+                {{translate.group.edit_group_type}}
+            </span>
         </div>
         <div class="row" ng-show="group_step == 2">
             <div class="col-sm-12">
                 <p class="text-center">
-                    {{ 'Type of test you want to perform' | translate }}
+                    {{translate.group.type_instructions}}
                 </p>
                 <div class="row group-type-select">
                     <div class="col-sm-6" ng-repeat="type in click_type_options track by $index">
                         <div class="group-wrapper" ng-class="{'active': type.value == group.sub_type}">
-                            <h3>{{type.label | translate}}</h3>
-                            <p ng-if="type.description">{{type.description | translate}}</p>
+                            <h3>{{type.label}}</h3>
+                            <p ng-if="type.description">{{type.description}}</p>
                             <span class="btn btn-primary btn-block" ng-click="choose_group_type(type.value)" ng-class="{'btn-success': type.value == group.sub_type}">
-                                {{ type.label | translate}}
+                                {{type.label}}
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
-            <span class="btn btn-primary pull-left" ng-click="change_step(1)">{{ 'Edit Group Name' | translate }}</span>
-            <span class="btn btn-primary pull-right" ng-click="change_step(3)">{{ 'Edit Group Tests' | translate }}</span>
+            <span class="btn btn-primary pull-left" ng-click="change_step(1)">
+                {{group.translate.edit_name}}
+            </span>
+            <span class="btn btn-primary pull-right" ng-click="change_step(3)">
+                {{group.translate.edit_group_tests}}
+            </span>
         </div>
         <div class="row group-type-select" ng-show="group_step == 3">
             <div ng-if="has_type()" ng-include="partials_url + '/content-test-partials/' + group.sub_type + '.html'"></div>
-            <span class="btn btn-primary pull-left" ng-click="change_step(2)">{{ 'Edit Group Type' | translate }}</span>
-            <button type="submit" class="btn btn-primary pull-right">{{ 'Save Group' | translate }}</button>
+            <span class="btn btn-primary pull-left" ng-click="change_step(2)">
+                {{translate.group.edit_group_type}}
+            </span>
+            <button type="submit" class="btn btn-primary pull-right">
+                {{translate.group.save_group}}
+            </button>
         </div>
     </form>
 </div>

@@ -1,9 +1,9 @@
 <a ui-sref="clickTests.edit({groupID:group_id})" class="btn btn-warning pull-right">Edit Group</a>
-<h2>Stats for Group: {{names.group}}</h2>
+<h2>{{translate.stats.stats_for}} {{names.group}}</h2>
 
 <div ng-show="!stats_exist">
     <h3 class="error">
-        No stats for this group yet.
+       {{translate.stats.no_stats}}
     </h3>
 </div>
 <div id="chartWrapper" ng-show="stats_exist">

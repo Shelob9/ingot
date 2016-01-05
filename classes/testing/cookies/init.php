@@ -42,7 +42,7 @@ class init {
 	protected $cookie_parts = array(
 		'price',
 		'click',
-		'meta'
+		'user'
 	);
 
 	/**
@@ -57,18 +57,62 @@ class init {
 	protected $cookie = array();
 
 	/**
+	 * @var \ingot\testing\cookies\init
+	 */
+	private static $instance;
+
+	/**
 	 * Set and check our cookies
 	 *
 	 * @since 0.0.9
 	 *
 	 * @uses "init"
 	 *
+	 * @access private
+	 *
 	 * @param array $cookies cookies super var
-	 * @param bool $rebuild Optional. Trigger a rebuild.
+	 * @param bool $rebuild If true, trigger a rebuild.
 	 */
-	public function __construct( $cookies, $rebuild = true ) {
+	private function __construct( $cookies, $rebuild = true ) {
 		if( $rebuild ) {
 			$this->rebuild( $cookies );
+		}
+
+	}
+
+	/**
+	 * Get instance of class
+	 *
+	 * IMPORTANT: Can not be used to create instance. Must use create()
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return \ingot\testing\cookies\init|\WP_Error
+	 */
+	public static function get_instance() {
+		if( ! is_null( self::$instance ) ){
+			return self::$instance;
+		}else{
+			return new \WP_Error( 'ingot-cookies-init-singleton-misuse', __( 'Ingot cookies object doe not exist. Use the create() method to create it.', 'ingot' ) );
+		}
+	}
+
+	/**
+	 * Create new class instance
+	 *
+	 * IMPORTANT: Can not be used to create instance. Must use create()
+	 *
+	 * @param array $cookies cookies super var
+	 * @param bool $rebuild Optional. Trigger a rebuild.
+	 *
+	 * @return \ingot\testing\cookies\init|\WP_Error
+	 */
+	public static function create( $cookies, $rebuild = true ) {
+		if( is_null( self::$instance ) ){
+			self::$instance = new self( $cookies, $rebuild );
+			return self::$instance;
+		}else{
+			return new \WP_Error( 'ingot-cookies-init-singleton-misuse', __( 'Ingot cookies object already exists. Use the get_instance() method to access it.', 'ingot' ) );
 		}
 
 	}
@@ -152,7 +196,7 @@ class init {
 	protected function setup_cookies() {
 		$this->setup_price_cookie();
 		//$this->setup_click_cookie();
-		//$this->setup_meta_cookie();
+		$this->setup_user_cookie();
 	}
 
 	/**
@@ -164,33 +208,10 @@ class init {
 	 */
 	protected function setup_price_cookie() {
 
-		$price = new \ingot\testing\cookies\price( $this->collect_sequence(), $this->cookie[ 'price' ] );
-		$this->cookie[ 'price' ] = $price->get_price_cookie();
+		$price = new \ingot\testing\cookies\price( $this->cookie[ 'price' ] );
+		$this->cookie[ 'price' ] = $price->get_cookie();
 	}
 
-	/**
-	 * Collect the tests we need
-	 *
-	 * @since 0.2.0
-	 *
-	 * @access protected
-	 *
-	 * @return array
-	 */
-	protected function collect_sequence() {
-
-		$args = array(
-			'price_test' => true,
-			'current' => true,
-			'limit' => -1
-		);
-
-		$active_sequences = \ingot\testing\crud\sequence::get_items( $args );
-
-		return $active_sequences;
-
-
-	}
 
 	/**
 	 * Setup our click cookies
@@ -206,16 +227,16 @@ class init {
 	}
 
 	/**
-	 * Setup our meta cookies
+	 * Setup our user cookies
 	 *
-	 * @todo this
 	 *
-	 * @since 0.0.9
+	 * @since 1.1.0
 	 *
 	 * @access protected
 	 */
-	protected function setup_meta_cookie(){
-		//so this later
+	protected function setup_user_cookie(){
+		$user = new user( $this->cookie[ 'user' ] );
+		$this->cookie[ 'user' ] = $user->get_cookie();
 	}
 
 }

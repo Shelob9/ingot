@@ -556,4 +556,61 @@ class group_crud extends \WP_UnitTestCase {
 		$this->assertSame( 4, count( $group[ 'levers' ][ $group_id ] ) );
 	}
 
+	/**
+	 * Test that when we can create price tests properly
+	 *
+	 * @since 0.4.0
+	 *
+	 * @group crud
+	 * @group group
+	 * @group group_crud
+	 * @group price
+	 *
+	 * @covers \ingot\testing\crud\group::create()
+	 */
+	public function testForPriceEDD(){
+		$data = ingot_test_data_price::edd_tests();
+		if( is_wp_error( $data ) ) {
+			var_dump( $data );
+			wp_die();
+		}
+		$group_id =  $data[ 'group_ID' ];
+		$this->assertTrue( is_numeric( $group_id ) );
+		$group = \ingot\testing\crud\group::read( $group_id );
+		$this->assertTrue( is_array( $group ) );
+		$this->assertSame( 'price', $group[ 'type' ] );
+		$this->assertSame( 'edd', $group[ 'sub_type' ] );
+
+	}
+
+	/**
+	 * Test that when we can create price tests properly
+	 *
+	 * @since 0.4.0
+	 *
+	 * @group crud
+	 * @group group
+	 * @group group_crud
+	 * @group price
+	 *
+	 * @covers \ingot\testing\crud\group::get_items()
+	 */
+	public function testQueryByType(){
+		$data = ingot_test_data_price::edd_tests();
+		ingot_tests_make_groups( false, 11, 1 );
+		$data = ingot_test_data_price::edd_tests();
+		$group_id = $data[ 'group_ID' ];
+		$items = \ingot\testing\crud\group::get_items( [
+			'type' => 'price',
+			'limit' => 5
+		]);
+
+		$this->assertTrue( is_array( $items ) );
+		$this->assertNotEmpty( $items );
+		$this->assertSame( 2, count( $items ) );
+		foreach( $items as $item ){
+			$this->assertEquals( 'price', $item[ 'type' ] );
+		}
+	}
+
 }

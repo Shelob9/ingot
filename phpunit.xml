@@ -12,6 +12,8 @@
 			<directory prefix="tests-" suffix=".php">./tests/crud</directory>
 			<directory prefix="tests-" suffix=".php">./tests/api</directory>
             <directory prefix="tests-" suffix=".php">./tests/utilities</directory>
+            <directory prefix="tests-" suffix=".php">./tests/objects</directory>
+            <directory prefix="tests-" suffix=".php">./tests/price</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>

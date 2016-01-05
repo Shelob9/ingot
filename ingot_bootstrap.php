@@ -56,8 +56,7 @@ class ingot_bootstrap {
 						new \ingot\ui\admin\app\load();
 					}
 
-					add_action( 'init', array( __CLASS__, 'init_cookies' ), 25 );
-					add_action( 'ingot_cookies_set', array( __CLASS__, 'init_price_tests' ) );
+					self::init_cookies();
 
 					/**
 					 * Runs when Ingot has loaded.
@@ -194,7 +193,7 @@ class ingot_bootstrap {
 
 		}
 
-		if(  self::table_exists( $table_name ) ) {
+		if( self::table_exists( $table_name ) ) {
 			return;
 		}
 
@@ -293,7 +292,7 @@ class ingot_bootstrap {
 	 * @since 0.0.9
 	 */
 	public static function init_cookies() {
-		return;
+
 		if( false == ingot_is_front_end() ) {
 			return false;
 		}
@@ -303,8 +302,8 @@ class ingot_bootstrap {
 			$cookies = $_COOKIE;
 		}
 
-		$cookies = new ingot\testing\cookies\init( $cookies );
-		$ingot_cookies = $cookies->get_ingot_cookie();
+		$cookies = ingot\testing\cookies\init::create( $cookies );
+		$ingot_cookies = ingot\testing\cookies\init::get_instance()->get_ingot_cookie();
 		if( ! empty( $ingot_cookies ) ){
 			$cookie_time = 15 * DAY_IN_SECONDS;
 
@@ -317,7 +316,7 @@ class ingot_bootstrap {
 			 */
 			$cookie_time = apply_filters( 'ingot_cookie_time', $cookie_time );
 			$cookie_name = $cookies->get_cookie_name();
-			setcookie( $cookie_name, $ingot_cookies, time() + $cookie_time, COOKIEPATH, COOKIE_DOMAIN, false );
+			//setcookie( $cookie_name, $ingot_cookies, time() + $cookie_time, COOKIEPATH, COOKIE_DOMAIN, false );
 			
 		}
 
@@ -332,43 +331,16 @@ class ingot_bootstrap {
 		 * @param \ingot\testing\cookies\init $cookies Cookies object
 		 */
 		do_action( 'ingot_cookies_set', $cookies );
+		if ( ingot_is_edd_active() && isset( $ingot_cookies[ 'price' ][ 'edd' ] ) && ! empty( $ingot_cookies[ 'price' ][ 'edd' ] )  ) {
+			new \ingot\testing\tests\price\plugins\edd( $ingot_cookies[ 'price' ][ 'edd' ] );
 
-	}
-
-	/**
-	 * Initialize price testing
-	 *
-	 * @uses "ingot_cookies_set"
-	 *
-	 * @params \ingot\testing\cookies\init $cookies Cookies object
-	 *
-	 * @since 0.0.9
-	 */
-	public static function init_price_tests( $cookies ) {
-
-		new \ingot\testing\tests\price\init( $cookies->get_ingot_cookie( false )[ 'price' ] );
-
-		if ( ingot_is_edd_active() ) {
-			self::track_edd();
 		}
 
 	}
 
-	/**
-	 * Hook into edd sales for tracking
-	 *
-	 * @since 0.0.9
-	 *
-	 * @access protected
-	 */
-	protected static function track_edd() {
 
-		add_action( 'edd_complete_purchase', array(
-			"\\ingot\\testing\\tests\\price\\track",
-			'track_edd_sale'
-		) );
 
-	}
+
 
 	/**
 	 * Add tables if needed

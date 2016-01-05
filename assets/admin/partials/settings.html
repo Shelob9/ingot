@@ -34,23 +34,23 @@
 
         <div class="form-settings">
             <label for="anon_tracking">
-                {{ 'settings.anon_tracking_label' | translate }}
+                {{translate.settings.anon_tracking_label}}
             </label>
             <input id="anon_tracking" type="checkbox" ng-model="settings.anon_tracking" ng-true-value="'1'" ng-false-value="'0'" />
             <p>
-                {{ 'settings.anon_tracking_desc' | translate }}
+                {{translate.settings.anon_tracking_desc}}
             </p>
 
         </div>
 
         <div class="form-settings">
             <label for="license_code">
-                {{ 'settings.license_code_label' | translate }}
+                {{translate.settings.license_code_label}}
             </label>
 
             <input id="license_code" type="text" ng-model="settings.license_code" />
             <p>
-                {{ 'settings.license_code_desc' | translate }}
+                {{translate.settings.license_code_desc}}
             </p>
             <div ng-show="1 == settings.license_valid">
                 <p class="alert alert-success" style="display: inline-block;">

@@ -23,16 +23,18 @@ function ingot_click_test( $id ) {
 	}
 
 	$type = $group[ 'sub_type' ];
-	switch( $type ) {
-		case in_array( $type, \ingot\testing\types::allowed_click_types() ) :
-			$html = ingot_click_html_link( $type, $group );
-			break;
-		case is_callable( $type ) :
-			$html = call_user_func( $type, $group );
-			break;
-		default :
-			$html = '';
+	if ( in_array( $type, \ingot\testing\types::allowed_click_types() ) ) {
+		switch ( $type ) {
+			case in_array( $type, \ingot\testing\types::allowed_click_types() ) :
+				$html = ingot_click_html_link( $type, $group );
+				break;
+			case is_callable( $type ) :
+				$html = call_user_func( $type, $group );
+				break;
+			default :
+				$html = '';
 
+		}
 	}
 
 	return $html;
@@ -68,7 +70,7 @@ function ingot_shortcode( $atts ) {
  * @since 0.0.6
  *
  * @param string $type Test type
- * @param int $group Group ID
+ * @param int|array $group Group ID or config array
  *
  * @return string
  */
@@ -592,18 +594,28 @@ function ingot_rest_response( $data, $code = 200, $total = null ){
  *
  * @since 0.4.0
  *
- * @param int $variant_ID ID of variant to register conversion for
+ * @param int|array $variant Variant config or Variant ID to register conversion for
  * @param int $session_ID Optional. Session ID. If a valid session ID is passed, that session will be marked as having converted with this vartiant ID.
  */
-function ingot_register_conversion( $variant_ID, $session_ID = 0 ){
-	$variant = \ingot\testing\crud\variant::read( $variant_ID );
+function ingot_register_conversion( $variant, $session_ID = 0 ){
+	if ( is_numeric( $variant ) ) {
+		$variant = \ingot\testing\crud\variant::read( $variant );
+	}
+
 	if ( is_array( $variant ) ) {
 		$bandit = new \ingot\testing\bandit\content( $variant[ 'group_ID' ] );
-		$bandit->record_victory( $variant_ID );
+		$bandit->record_victory( $variant[ 'ID' ] );
 
 		if ( 0 < absint( $session_ID ) && is_array( $session = \ingot\testing\crud\session::read( $session_ID ) ) ) {
-			$session[ 'click_ID' ] = $variant_ID;
-			$session[ 'used' ] = true;
+
+		}else{
+			$session = \ingot\testing\ingot::instance()->get_current_session()[ 'session' ];
+
+		}
+
+		if ( \ingot\testing\crud\session::valid( $session ) ) {
+			$session[ 'click_ID' ] = $variant[ 'ID' ];
+			$session[ 'used' ]     = true;
 			if ( 0 !== ( $userID = get_current_user_id() ) ) {
 				$session[ 'click_url' ] = $userID;
 			}

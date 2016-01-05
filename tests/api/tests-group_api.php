@@ -54,7 +54,7 @@ class tests_group_api extends ingot_rest_test_case {
 		foreach( $data as $group  ){
 			$this->assertTrue( in_array( $group[ 'ID' ], $groups[ 'ids' ] ) );
 			$this->assertEquals( count( $group ), count( $fields ) );
-
+			$this->assertEquals( 'click', $group[ 'type' ] );
 			$group_direct = \ingot\testing\crud\group::read( $group[ 'ID' ] );
 			foreach( $fields as $field ){
 				$this->assertArrayHasKey( $field, $group );
@@ -64,6 +64,40 @@ class tests_group_api extends ingot_rest_test_case {
 
 		}
 	}
+
+	/**
+	 * Test getting price tests via API
+	 *
+	 * @since 1.0.0
+	 *
+	 * @group price
+	 * @group rest
+	 * @group group_rest
+	 * @group group
+	 *
+	 * @covers ingot\testing\api\rest\groups::get_items()
+	 */
+	public function testGetPrice(){
+		wp_set_current_user( 1 );
+		ingot_test_data_price::edd_tests();
+		ingot_test_data_price::edd_tests();
+		ingot_tests_make_groups( true, 4, 3 );
+
+		$groups = ingot_tests_make_groups( true, 4, 3 );
+		$request = new \WP_REST_Request( 'GET', $this->namespaced_route );
+		$request->set_query_params( array(
+			'type' => 'price'
+		) );
+		$response = $this->server->dispatch( $request );
+		$response = rest_ensure_response( $response );
+		$this->assertEquals( 200, $response->get_status() );
+		$data = (array) $response->get_data();
+		foreach( $data as $group  ){
+			$this->assertEquals( 'price', $group[ 'type' ] );
+		}
+	}
+
+
 	/**
 	 * Test getting a one item
 	 *
