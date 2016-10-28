@@ -17,7 +17,7 @@ Domain Path: /languages
 
 if( defined( 'INGOT_VER' ) ){
 	include_once( dirname( __FILE__ ) . '/vendor/calderawp/dismissible-notice/src/functions.php' );
-	$message = esc_html__( 'The full version of Ingot could not be loaded beacuse the free version is active. Please disable "Nugget by Ingot"', 'ingot' );
+	$message = esc_html__( 'The full version of Ingot could not be loaded because the free version is active. Please disable "Nugget by Ingot"', 'ingot' );
 }else{
 	define( 'INGOT_VER', '1.3.2' );
 	define( 'INGOT_TYPE', 'FULL' );
